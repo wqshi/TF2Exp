@@ -23,7 +23,8 @@ Rscript s_tf2exp.R --chr_str chr22 \
                    --output_dir ./data/test_data \
                    --deepsea_dir ./data/tf2exp_data/deepsea/ \
                    --model_dir ./data/tf2exp_data/models/ 
- ```                  
+ ```
+ 
 
 ## Input parameters for TF2Exp pipeline:
 
