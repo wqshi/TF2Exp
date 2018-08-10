@@ -2,7 +2,7 @@
 
 Author: Wenqiang Shi.
 
-Email:wqshi.nudt@gmail.com
+Email: wqshi.nudt@gmail.com
 
 ## Introduction
 
@@ -10,12 +10,12 @@ TF2Exp is a gene-based framework to predict the impact of altered TF-binding eve
 
 In this repository, the provided pipeline would use the trained models to predict the impact of variants given by users.
 
-The model training scripts of the TF2Exp paper are located in https://github.com/wqshi/TF2Exp_paper
+The model training scripts of the TF2Exp paper are located in https://github.com/wqshi/TF2Exp_paper.
 
 
 ## Example
 
-Please see the s_test_tf2exp.R
+A simple example test run is provided in s_test_tf2exp.sh as following:
 
 Rscript s_tf2exp.R --chr_str chr22 \
                    --vcf_file ./data/test_data/test.vcf.gz \
@@ -26,13 +26,12 @@ Rscript s_tf2exp.R --chr_str chr22 \
 
 ## Input parameters for TF2Exp pipeline:
 
-TF2Exp models only require genotype data in vcf format as input. The vcf file should contain genotype data for at least one individual.
+TF2Exp models only require genotype data in vcf format as input. The vcf file should contain genotype data for different individuals. To reduce memory usage, the script will only process variants in one chromosom.
 
-The output is the predicted expression levels for impacted genes.
+Based on the input variants, TF2Exp will calculate the alteration of key TF-binding events in the TF2Exp model and further predict the alteration of gene expression in each individual. The output is a file named pred_full.txt in the output directory. If the variants doesn't impact the expression of a gene across all the individuals, the predicted expression levels would be same for all individuals. This value is the mean expression value of that gene in the training data.  
 
-In addition, TF2Exp further needs two types of data, pre-compiled deepsea data and trained models. The repository include the test data. They are located at ./data/tf2exp_data/models/ by default.
 
-The complete set of the data is stored at XXXXX. We have pre-compiled all the variants for 358 European individuals in the 1000 Genomes Project. The pre-compiled set might miss some variants in the user vcf file. Alternatively, user can use deepsea to predict the impact of all the variants. A guideline will be provided soon.
+In addition, TF2Exp further needs two types of data, pre-compiled variant impact data (given by [DeepSEA](https://www.nature.com/articles/nmeth.3547)) and trained models for each gene. The repository include example data. The example variant impact data are located in ./data/tf2exp_data/deepsea, and example trained models are in ./data/tf2exp_data/models. A complete set of impact and trained models is available at [Zenodo](https://doi.org/10.5281/zenodo.1044747). The directory organization is same as ./data/tf2exp_data/. In the complete data set, we have pre-compiled all the variants on chr1-chr22 for 358 European individuals in the 1000 Genomes Project. The pre-compiled set might miss some variants in the user vcf file. Alternatively, user can use deepsea to predict the impact of all the variants. A guideline will be provided soon.
 
 
 ## Software used in the testing:
@@ -41,7 +40,7 @@ The complete set of the data is stored at XXXXX. We have pre-compiled all the va
 
 * OS: CentOS 5
 
-* Other R packages include data.table.1.9.6, RUnit.0.4.29, plyr.1.8.3, stringi.0.5-5, dplyr0.5.0, stringr.1.0.0, futile.logger.1.4.1.
+* Other R packages include data.table.1.9.6, RUnit.0.4.29, plyr.1.8.3, stringi.0.5.5, dplyr0.5.0, stringr.1.0.0, futile.logger.1.4.1.
 
 ## To do:
 
