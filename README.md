@@ -39,7 +39,7 @@ TF2Exp models only require genotype data in vcf format as input. The vcf file sh
 
 * --output_dir
 
-Based on the input variants, TF2Exp will calculate the alteration of key TF-binding events in the TF2Exp model and further predict the alteration of gene expression in each individual. The output is a file named `pred_full.txt` in the output directory specified by `--output_dir`. If the variants doesn't impact the expression of a gene across all the individuals, the predicted expression levels would be same for all individuals. This value is the mean expression value of that gene in the training data.  
+Based on the input variants, TF2Exp will calculate the alteration of key TF-binding events in the TF2Exp model and further predict the alteration of gene expression in each individual. The output is a file named `pred_full.txt` in the output directory specified by `--output_dir`. The `pred_full.txt` presents a data matrix, in which a element is the predicted expression for a gene (indicated by column name) in a individual of input vcf file(indicated by row name). If the variants doesn't impact the expression of a gene across all the individuals, the predicted expression levels would be same for all individuals. This value is the mean expression value of that gene in the training data.  
 
 * --deepsea_dir, --model_dir
 
