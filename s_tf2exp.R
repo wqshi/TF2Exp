@@ -1,5 +1,5 @@
 
-
+library(futile.logger)
 library("optparse")
 
 option_list = list(
@@ -18,7 +18,7 @@ opt = parse_args(opt_parser);
 
 source('s_prepare_predict_data.R')
 source('s_predict_expression.R')
-library(futile.logger)
+
 
 
 

@@ -78,8 +78,25 @@ t_parse_vcf_and_predict_new_dir <- function(){
 }
 
 
+t_test_GT_GQ_vcf_type <- function(){
 
-t_parse_vcf_and_predict_new_dir()
+    pred_dir = './data/test_data'
+    output_dir = pred_dir
+    chr_str = 'chr22'
+    test_vcf_file = f_p('%s/test_GT_GQ.vcf', pred_dir)
+
+    deepsea_dir = sprintf('./data/tf2exp_data/deepsea/%s/', chr_str)
+    
+    results_dir = f_p('./data/tf2exp_data/models/%s/', chr_str)
+    f_parse_vcf_and_predict(test_vcf_file, deepsea_dir, results_dir, output_dir, chr_str, debug = F)
+
+}
+
+
+t_test_GT_GQ_vcf_type()
+
+
+#t_parse_vcf_and_predict_new_dir()
 #t_test_one_gene()
 
 

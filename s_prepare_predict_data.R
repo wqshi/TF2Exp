@@ -15,9 +15,9 @@ f_genotype_to_numbers <- function(vcf_data){
     het_df[,] = 0
     
     for(loc_indiv in colnames(vcf_data)){
-        het_selection = grepl('(0.1|1.0)', genotype_df[, loc_indiv])
+        het_selection = grepl('(0[|/]1|1[|/]0)', genotype_df[, loc_indiv])
         het_df[het_selection, loc_indiv] = 0.5
-        homo_selection = grepl('1.1', genotype_df[, loc_indiv])
+        homo_selection = grepl('1[|/]1', genotype_df[, loc_indiv])
         het_df[homo_selection, loc_indiv] = 1
     }
 

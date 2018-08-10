@@ -1,4 +1,8 @@
 
+rsync -avu shi@loire.cmmt.ubc.ca:/homed/home/shi/TF2Exp/* ./
+
+
+exit 0
 #loire='shi@loire.cmmt.ubc.ca:/homed/home/shi/'
 
 loire='..'
@@ -10,7 +14,7 @@ rsync -avu $loire/expression_var/R/*tf2exp* .
 rsync -avu $loire/expression_var/R/s_project_funcs.R .
 rsync -avu $loire/expression_var/R/r_bedtools.R .
 rsync -avu $loire/expression_var/R/s_gene_data_class.R .
-rsync -avu $loire/expression_var/R/README.rd .
+rsync -avu $loire/expression_var/R/README.md .
 #rsync -avu $loire/expression_var/R/.git/* ./.git/
 
 
