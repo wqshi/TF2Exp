@@ -23,7 +23,7 @@ Rscript s_tf2exp.R --chr_str chr22 \
                    --output_dir ./data/test_data \
                    --deepsea_dir ./data/tf2exp_data/deepsea/ \
                    --model_dir ./data/tf2exp_data/models/
-                                                                             ```
+```
 
 
 ## Input parameters for TF2Exp pipeline:
@@ -61,40 +61,4 @@ In addition, TF2Exp further needs two types of data, pre-compiled variant impact
 ## Citation:
 
 Shi, Wenqiang, Oriol Fornes, and Wyeth W. Wasserman. "Altered transcription factor binding events predict personalized gene expression and confer insight into functional cis-regulatory variants." bioRxiv (2017): 228155.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
