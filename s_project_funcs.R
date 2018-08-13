@@ -76,7 +76,8 @@ f_duplicated_cols <- function(df){
 }
 
 f_judge_debug<-function(debug_flag){
-    return (f_get_server_name() == 'loire' & debug_flag)
+                                        #return (f_get_server_name() == 'loire' & debug_flag)
+    debug_flag
 }
 
 f_get_server_name <- function(){

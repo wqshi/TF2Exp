@@ -6,7 +6,7 @@ source('s_project_funcs.R')
 source('r_bedtools.R')
 source('s_predict_expression.R')
 library(stringr)
-options(warn=2)
+options(warn=0)
 
 f_genotype_to_numbers <- function(vcf_data){
 
