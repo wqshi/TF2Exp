@@ -58,8 +58,8 @@ browser(expr=is.null(.ESSBP.[["@2@"]]))##:ess-bp-end:##
     }
 
     cmd = f_p('bedtools %s -a %s -b %s %s | tr -s \'\t\' \'\t\'', fun, A_file, B_file, paras)
-    print(cmd)
-    library(data.table)
+    flog.debug(cmd)
+    suppressMessages(library(data.table))
     df <- fread(cmd)
     unlink(my_tmpdir, recursive = T)
     return (df)

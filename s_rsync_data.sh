@@ -1,8 +1,4 @@
 
-rsync -avu shi@loire.cmmt.ubc.ca:/homed/home/shi/TF2Exp/* ./
-
-
-exit 0
 #loire='shi@loire.cmmt.ubc.ca:/homed/home/shi/'
 
 loire='..'

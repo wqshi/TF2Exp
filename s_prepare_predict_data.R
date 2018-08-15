@@ -2,11 +2,11 @@
 
 
 #setwd('../R/')
-source('s_project_funcs.R')
-source('r_bedtools.R')
-source('s_predict_expression.R')
+suppressMessages(source('s_project_funcs.R'))
+suppressMessages(source('r_bedtools.R'))
+suppressMessages(source('s_predict_expression.R'))
 library(stringr)
-options(warn=0)
+options(warn=2)
 
 f_genotype_to_numbers <- function(vcf_data){
 
@@ -41,7 +41,7 @@ f_transform_tf_to_deepsea_file_name <- function(input_tfs){
 
 
 f_get_vcf_header <- function(input_vcf_file){
-    library(data.table)
+    suppressMessages(library(data.table))
     if (grepl('.*vcf.gz', input_vcf_file)){
         header_cmd = f_p("zcat %s | head -n 10000 | grep -i '^#' | tail -1", input_vcf_file)
     }else{
@@ -70,7 +70,7 @@ browser(expr=is.null(.ESSBP.[["@3@"]]))##:ess-bp-end:##
     impact_data = impact_data_raw[, c('chr', 'pos', 'name', 'ref', 'alt', grep('GM12878',colnames(impact_data_raw), value = T))]
     
     if(ncol(impact_data) > 6){        
-        flog.warn('Impact file has >6 columns')
+        flog.debug('Impact file has >6 columns')
         impact_data = impact_data[,1:6]
     }
     colnames(impact_data) = c('chr', 'pos', 'name', 'ref', 'alt', 'tf_impact')
@@ -78,8 +78,8 @@ browser(expr=is.null(.ESSBP.[["@3@"]]))##:ess-bp-end:##
     
 
     
-    #input_data = feature_vcf_combine %>% select(-one_of(c('qual', 'filter','info', 'format', 'id', 'overlap'))) %>% 
-    #    filter(grepl(target_tf, feature_vcf_combine$tf_name, ignore.case = T))
+                                        #input_data = feature_vcf_combine %>% select(-one_of(c('qual', 'filter','info', 'format', 'id', 'overlap'))) %>% 
+                                        #    filter(grepl(target_tf, feature_vcf_combine$tf_name, ignore.case = T))
 
     input_data = feature_vcf_combine %>% select(one_of(c('chr', 'tf_start', 'tf_end', 'tf_name', 'pos', 'ref', 'alt', vcf_samples))) %>% 
         filter(grepl(target_tf, feature_vcf_combine$tf_name, ignore.case = T))
@@ -91,13 +91,14 @@ browser(expr=is.null(.ESSBP.[["@3@"]]))##:ess-bp-end:##
 
 
     na_impact_genotypes <- merge_data %>% filter(is.na(tf_impact)) %>% dplyr::select(one_of(vcf_samples))
-    if (nrow(na_impact_genotypes) > 0) 
-        f_assert(all(na_impact_genotypes == 0), sprintf('No match tf impact of the genotype %s out of %s', nrow(na_impact_genotypes), nrow(input_data) ))
+    if (nrow(na_impact_genotypes) == nrow(input_data)) 
+                                        #f_assert(all(na_impact_genotypes == 0), sprintf('No match tf impact of the genotype %s out of %s', nrow(na_impact_genotypes), nrow(input_data) ))
+        f_assert(all(na_impact_genotypes == 0), sprintf('No match tf impact of the genotype'))
 
     
     merge_data[,vcf_samples] = merge_data[, vcf_samples] * merge_data$tf_impact
-    #tf_alteration <- merge_data %>% filter(!is.na(tf_impact)) %>% group_by(chr, tf_start, tf_end, tf_name)  %>%
-    #    summarise_at(.cols = vcf_samples, .funs = c(sum = "sum")) %>% as.data.frame()
+                                        #tf_alteration <- merge_data %>% filter(!is.na(tf_impact)) %>% group_by(chr, tf_start, tf_end, tf_name)  %>%
+                                        #    summarise_at(.cols = vcf_samples, .funs = c(sum = "sum")) %>% as.data.frame()
 
     vcf_samples_new = str_replace(vcf_samples,'-', '__')
 
@@ -106,7 +107,7 @@ browser(expr=is.null(.ESSBP.[["@3@"]]))##:ess-bp-end:##
     colnames(merge_data) = new_col_name
 
     tf_alteration <- merge_data %>% filter(!is.na(tf_impact)) %>% group_by(chr, tf_start, tf_end, tf_name)  %>%
-        summarise_at(.cols = vcf_samples_new, .funs = c(sum = "sum")) %>% as.data.frame()
+        summarise_at(vcf_samples_new, .funs = c(sum = "sum")) %>% as.data.frame()
 
     colnames(tf_alteration) = c('chr', 'tf_start', 'tf_end', 'tf_name', vcf_samples) 
 
@@ -134,7 +135,7 @@ f_key_features_alteration_given_vcf <- function(test_vcf_file, deepsea_dir, key_
     }
     
     feature_bed = feature_data[,c('chr','feature_start', 'feature_end', 'tf')] %>%
-    filter(tf != '(Intercept)') %>% unique %>% arrange(chr, feature_start)
+        filter(tf != '(Intercept)') %>% unique %>% arrange(chr, feature_start)
     head(feature_bed)
 
 
@@ -163,10 +164,10 @@ f_key_features_alteration_given_vcf <- function(test_vcf_file, deepsea_dir, key_
     diff_file = file_list[1]
     tf_alteration = data.frame()
     for (diff_file in file_list){
-        flog.info('Process %s', diff_file)
+                                        #flog.info('Process %s', diff_file)
 
         if (grepl('.*dnase.*xxx', diff_file)){
-##:ess-bp-start::browser@nil:##
+            ##:ess-bp-start::browser@nil:##
 browser(expr=is.null(.ESSBP.[["@2@"]]))##:ess-bp-end:##
             
 
@@ -175,6 +176,8 @@ browser(expr=is.null(.ESSBP.[["@2@"]]))##:ess-bp-end:##
         tf_alteration = rbind(tf_alteration, one_tf_impact)
     }
 
+    flog.info('Processed %s TFs', length(unique(tf_alteration$tf_name)))
+    
     return (list(tf_alteration = tf_alteration, feature_bed = feature_bed, vcf_out = out))
 
 }
@@ -225,25 +228,32 @@ browser(expr=is.null(.ESSBP.[["@3@"]]))##:ess-bp-end:##
 
     
     gene_list = unique(feature_data$gene)
-    #Predict expression for each gene
-    #
-    loc_gene = gene_list[1]
+                                        #Predict expression for each gene
+                                        #
+    
     pred_df = data.frame( name =  sample_cols)
 
+
+
+    gene_counter = 0
+    
     closeAllConnections()
 
     for (loc_gene in gene_list){
 
 
-        #flog.debug('Process %s', loc_gene)
+                                        #flog.debug('Process %s', loc_gene)
         
         
         
         output_file = f_p('%s/%s.enet',  results_dir, loc_gene)
 
+
+        if (!file.exists(f_p('%s/%s.enet.model',  results_dir, loc_gene))) next
+        
         result <-try(
-        fit<- readRDS(f_p('%s.model', output_file)),
-        silent = T
+            fit<- readRDS(f_p('%s.model', output_file)),
+            silent = T
         )
 
         if (class(result) == "try-error"){
@@ -251,12 +261,14 @@ browser(expr=is.null(.ESSBP.[["@3@"]]))##:ess-bp-end:##
             next
         }else{
 
-            flog.info('Process %s', loc_gene)
+            gene_counter = gene_counter + 1
+
+            flog.debug('Process %s', loc_gene)
             
         }
         feature_df = read.table(f_p('%s.features.gz', output_file), header = T)
 
-       
+        
         feature_df$feature = f_transform_tf_to_deepsea_file_name(feature_df$name)
         feature_df$loc_tf = str_replace(feature_df$name, '.*[|]', '')
 
@@ -294,7 +306,7 @@ browser(expr=is.null(.ESSBP.[["@3@"]]))##:ess-bp-end:##
         pred_df[loc_gene] = pred_result$pred_value[sample_cols,1]
 
         
-        #flog.info('Perf: %s', pred_result$pred_value[1,1]    )
+                                        #flog.info('Perf: %s', pred_result$pred_value[1,1]    )
     }
 
 
@@ -302,6 +314,9 @@ browser(expr=is.null(.ESSBP.[["@3@"]]))##:ess-bp-end:##
 
     rownames(pred_df) = pred_df$name 
     pred_df$name = NULL
+
+    flog.info('Process %s genes', ncol(pred_df))
+    flog.info('Predicted gene expression values are in %s', sprintf('%s/pred_full.txt', output_dir))
 
     write.table(pred_df, sprintf('%s/pred_full.txt', output_dir), quote = F, sep = '\t')
 
