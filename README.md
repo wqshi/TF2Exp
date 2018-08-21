@@ -55,6 +55,8 @@ In addition, TF2Exp further needs two types of data, pre-compiled variant impact
 
 * Other R packages include data.table.1.9.6, RUnit.0.4.29, plyr.1.8.3, stringi.0.5.5, dplyr0.5.0, stringr.1.0.0, futile.logger.1.4.1.
 
+The packages has been tested in Ubuntu 14.04
+
 ## To do:
 Tutorial for running DeepSEA.
 
