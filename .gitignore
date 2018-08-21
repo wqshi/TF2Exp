@@ -1,2 +1,5 @@
 .Rhistory
 s_rsync_*.sh
+*.sh
+*tmp*
+*resources*
