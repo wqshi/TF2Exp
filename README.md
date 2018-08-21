@@ -50,7 +50,6 @@ Based on the input variants, TF2Exp will calculate the alteration of key TF-bind
 In addition, TF2Exp further needs two types of data, pre-compiled variant impact data (given by [DeepSEA](https://www.nature.com/articles/nmeth.3547), `--deepsea_dir` parameter) and trained models for each gene (`--model_dir` parameter). This repository include some example data. The example variant impact data are located in ./data/tf2exp_data/deepsea, and example trained models are in ./data/tf2exp_data/models. A complete set of impact and trained models is available at [tf2exp_data_full.tar.gz](https://zenodo.org/record/1343131). The directory organization is same as ./data/tf2exp_data/. In the complete data set, we have pre-compiled all the variants on chr1-chr22 for 358 European individuals in the 1000 Genomes Project. The pre-compiled set might miss some variants in the user vcf file. Alternatively, user can use scriptes in ./deepsea to predict the impact of all the input variants.
 
 
-
 ## Environment and packages used in the testing:
 
 * R 3.1.3
@@ -64,7 +63,7 @@ This package has been tested on Ubuntu 14.04.
 
 
 ## To do:
-Tutorial for running DeepSEA.
+Compile all the variants data in 1000 Genomes project.
 
 ## Citation:
 
