@@ -20,15 +20,16 @@ Second, create a symbol link of 'Deepsea_install_directory/resources/' to the de
 
 ln -s /home/wqshi/packages/DeepSEA-v0.93/resources/ ./deepsea/
 
+#Another necessary step to enable DeepSEA
 cp /home/wqshi/packages/DeepSEA-v0.93/deepsea.cpu ./deepsea/
 
 ```
 
 Thrid, download and unzip:
 
-    * TF-bould regions from the [encode_peaks.tar.gz](https://zenodo.org/record/1343131). 
+* TF-bould regions from the [encode_peaks.tar.gz](https://zenodo.org/record/1343131). 
 
-    * prepare the human reference fasta file [GRCh37/hg19](https://ftp-trace.ncbi.nih.gov/1000genomes/ftp/technical/reference/human_g1k_v37.fasta.gz)
+* prepare the human reference fasta file [GRCh37/hg19](https://ftp-trace.ncbi.nih.gov/1000genomes/ftp/technical/reference/human_g1k_v37.fasta.gz)
 
 
 ## Example to run:
@@ -42,7 +43,7 @@ python2.7 p_tf2exp_rundeepsea.py --vcf_file ./examples/deepsea/chr22.3k.vcf \
                    --hg19_file $PATH_TO_HG19
 ```
 
-In the tf_dir, we expect to find narrowPeak files for different TFs in GM12878, e.g. haib-gm12878-atf2.narrowPeak. The output will be sorted in the ./out directory. For each tf, there will be three files, e.g. atf2.out.diff, atf2.out.ref, atf2.out.evalue. The output directory will be the input directory (--deepsea_dir) for TF2Exp pipeline. 
+The PATH_TO_TF_DIR should be pointed to the unzipped encode_peaks.tar.gz. In the tf_dir, we expect to find narrowPeak files for different TFs in GM12878, e.g. haib-gm12878-atf2.narrowPeak. The output will be sorted in the ./out directory. For each tf, there will be three files, e.g. atf2.out.diff, atf2.out.ref, atf2.out.evalue. The output directory will be the input directory (--deepsea_dir) for TF2Exp pipeline. 
 
 
 ## Environment and packages used in the testing:
