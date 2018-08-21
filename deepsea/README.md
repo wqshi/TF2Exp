@@ -1,6 +1,4 @@
-## TF2Exp: regression models to predict the impact of altered TF binding on gene expression levels
-
-### Use DeepSEA to calculate the impact of variants in TF-bound regions
+## Use DeepSEA to calculate the impact of variants in TF-bound regions
 
 
 Contact: wqshi.nudt@gmail.com
@@ -43,7 +41,7 @@ python2.7 p_tf2exp_rundeepsea.py --vcf_file ./examples/deepsea/chr22.3k.vcf \
                    --hg19_file $PATH_TO_HG19
 ```
 
-The PATH_TO_TF_DIR should be pointed to the unzipped encode_peaks.tar.gz. In the tf_dir, we expect to find narrowPeak files for different TFs in GM12878, e.g. haib-gm12878-atf2.narrowPeak. The output will be sorted in the ./out directory. For each tf, there will be three files, e.g. atf2.out.diff, atf2.out.ref, atf2.out.evalue. The output directory will be the input directory (--deepsea_dir) for TF2Exp pipeline. 
+The PATH_TO_TF_DIR should be pointed to the [encode_peaks.tar.gz](https://zenodo.org/record/1343131). In the tf_dir, we expect to find narrowPeak files for different TFs in GM12878, e.g. haib-gm12878-atf2.narrowPeak. The output will be sorted in the ./out directory. For each tf, there will be three files, e.g. atf2.out.diff, atf2.out.ref, atf2.out.evalue. The output directory will be the input directory (--deepsea_dir) for TF2Exp pipeline. 
 
 
 ## Environment and packages used in the testing:
