@@ -22,7 +22,7 @@ if __doc__ is None:
     args = parser.parse_args()
     vcf_file = args.vcf_file
     tf_dir = args.tf_dir
-    hg19_dir = args.hg19_file
+    hg19_file = args.hg19_file
     outdir = args.out_dir
     debug = False
 else:
@@ -30,7 +30,7 @@ else:
     vcf_file = './examples/deepsea/chr22.3k.vcf'
     outdir = 'outdir2018'
     tf_dir = None
-    debug = True
+    debug = False
     hg19_file=None
 
 cpoutdir=True
@@ -55,7 +55,7 @@ if 'vcf' in vcf_file:
     for loc_tf in peak_file_df_rmdup.index:
         final_file = '%s/%s.out.evalue' % (outdir, loc_tf)
         if os.path.isfile(final_file):
-            logging.info('Skip %s' % loc_tf)
+            logging.info('Skip %s: %s' % (loc_tf, final_file))
             continue
 
         try:
@@ -69,8 +69,11 @@ if 'vcf' in vcf_file:
             #vcf_file = '%s/deepsea/tests/data/chr22.merge.head.vcf.gz'%(project_dir)
             deepsea_tf = peak_file_df_rmdup.ix[loc_tf, 'deepsea_tf']
             
-            print "Successfully copied input to working directory " + tempdir 
+            print "Successfully copied input to working directory " + tempdir
+            
             try:
+
+                #logging.info("python2.7 p_generate_peak_fastq.py --vcf_file %s --peak_file %s --tmp_dir %s --hg19_file %s" % (vcf_file, peak_file, tmp_dir, hg19_file))
                 my.f_shell_cmd("python2.7 p_generate_peak_fastq.py --vcf_file %s --peak_file %s --tmp_dir %s --hg19_file %s" % (vcf_file, peak_file, tmp_dir, hg19_file))
             except:
                 raise Exception('Vcf format error.')
@@ -89,9 +92,10 @@ if 'vcf' in vcf_file:
                 my.f_shell_cmd("cp %s/infile.vcf.out.ref %s/%s.out.ref" % (tmp_dir, outdir, loc_tf))
                 my.f_shell_cmd("cp %s/infile.vcf.out.diff %s/%s.out.diff" % (tmp_dir, outdir, loc_tf))
                 my.f_shell_cmd("cp %s/infile.vcf.out.evalue %s/%s.out.evalue" % (tmp_dir, outdir, loc_tf))
-        
-        except:
+        except Exception as e:
+            print(e)
             print 'Skip %s' % loc_tf
+            
         print "Finished creating output file. Now clean up..."
         if not f_judge_debug(debug):
             call(['rm',tempdir,'-r'])
