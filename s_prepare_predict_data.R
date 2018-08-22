@@ -6,7 +6,7 @@ suppressMessages(source('s_project_funcs.R'))
 suppressMessages(source('r_bedtools.R'))
 suppressMessages(source('s_predict_expression.R'))
 library(stringr)
-options(warn=2)
+options(warn=0)
 
 f_genotype_to_numbers <- function(vcf_data){
 
@@ -78,8 +78,8 @@ browser(expr=is.null(.ESSBP.[["@3@"]]))##:ess-bp-end:##
     
 
     
-                                        #input_data = feature_vcf_combine %>% select(-one_of(c('qual', 'filter','info', 'format', 'id', 'overlap'))) %>% 
-                                        #    filter(grepl(target_tf, feature_vcf_combine$tf_name, ignore.case = T))
+   ##input_data = feature_vcf_combine %>% select(-one_of(c('qual', 'filter','info', 'format', 'id', 'overlap'))) %>% 
+   ##filter(grepl(target_tf, feature_vcf_combine$tf_name, ignore.case = T))
 
     input_data = feature_vcf_combine %>% select(one_of(c('chr', 'tf_start', 'tf_end', 'tf_name', 'pos', 'ref', 'alt', vcf_samples))) %>% 
         filter(grepl(target_tf, feature_vcf_combine$tf_name, ignore.case = T))
@@ -216,6 +216,9 @@ browser(expr=is.null(.ESSBP.[["@3@"]]))##:ess-bp-end:##
     }
 
 
+    feature_output_dir = sprintf('%s/features/%s/', output_dir, chr_str)
+    dir.create(feature_output_dir, recursive = T)
+    
     tf_alteration = process_list$tf_alteration
     tmp_cols = str_replace(colnames(tf_alteration), '_sum', '')
     tmp_cols[2:4] = c('feature_start', 'feature_end', 'feature')
@@ -240,7 +243,7 @@ browser(expr=is.null(.ESSBP.[["@3@"]]))##:ess-bp-end:##
     closeAllConnections()
 
     for (loc_gene in gene_list){
-        
+
         output_file = f_p('%s/%s.enet',  results_dir, loc_gene)
 
 
@@ -257,11 +260,13 @@ browser(expr=is.null(.ESSBP.[["@3@"]]))##:ess-bp-end:##
         }else{
 
             gene_counter = gene_counter + 1
-            flog.debug('Process %s', loc_gene)            
+
+            flog.debug('Process %s', loc_gene)
+            
         }
+
         
         feature_df = read.table(f_p('%s.features.gz', output_file), header = T)
-
         
         feature_df$feature = f_transform_tf_to_deepsea_file_name(feature_df$name)
         feature_df$loc_tf = str_replace(feature_df$name, '.*[|]', '')
@@ -273,11 +278,16 @@ browser(expr=is.null(.ESSBP.[["@3@"]]))##:ess-bp-end:##
         target_data<-feature_df[,c('feature','feature_start', 'feature_end','name', 'loc_tf')] %>%
             left_join(tf_alteration, by = c("feature", "feature_start", "feature_end"))
 
+                
         
+        subset_data = target_data %>% filter(!is.na(chr))
 
         if (!all(rowSums(is.na(target_data[,sample_cols])) == length(sample_cols))){
 
             flog.debug('None empty prediction for %s', loc_gene)
+
+        }else{
+            next
 
         }
 
@@ -289,15 +299,16 @@ browser(expr=is.null(.ESSBP.[["@3@"]]))##:ess-bp-end:##
 
         non_zero_cols=grep('Intercept',names(fit$key_features)[fit$key_features != 0],invert = T, value = T)
 
-        non_zero_cols
-        
+
         ##f_assert(all(!is.na(predict_data[,non_zero_cols])), 'Key features are not zero')
         target_col = ''
         pred_result = f_predict_exp(fit, predict_data, target_col, debug = F)        
-        ##:ess-bp-start::browser@nil:##
-browser(expr=is.null(.ESSBP.[["@2@"]]))##:ess-bp-end:##
-        
+
         pred_df[loc_gene] = pred_result$pred_value[sample_cols,1]
+
+        #if (sd(pred_df[,loc_gene]) != 0){
+        write.table(subset_data, sprintf('%s/%s.features.txt',feature_output_dir, loc_gene), quote = F, sep = '\t')
+        #}
 
         
                                         #flog.info('Perf: %s', pred_result$pred_value[1,1]    )
@@ -310,9 +321,11 @@ browser(expr=is.null(.ESSBP.[["@2@"]]))##:ess-bp-end:##
     pred_df$name = NULL
 
     flog.info('Process %s genes', ncol(pred_df))
-    flog.info('Predicted gene expression values are in %s', sprintf('%s/pred_full.txt', output_dir))
+    exp_file = sprintf('%s/predicted_exp.%s.txt', output_dir, chr_str)
+    flog.info('Predicted gene expression values are in %s', exp_file)
+    flog.info('Altered features of each gene are in %s', feature_output_dir)
 
-    write.table(pred_df, sprintf('%s/pred_full.txt', output_dir), quote = F, sep = '\t')
+    write.table(pred_df, exp_file, quote = F, sep = '\t')
 
 }
 

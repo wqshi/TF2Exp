@@ -94,8 +94,6 @@ t_test_GT_GQ_vcf_type <- function(){
 
 
 #t_test_GT_GQ_vcf_type()
-
-
 t_parse_vcf_and_predict_new_dir()
 #t_test_one_gene()
 

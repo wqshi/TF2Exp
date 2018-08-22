@@ -37,7 +37,7 @@ A test run with example data is like following:
 ```
 python2.7 p_tf2exp_rundeepsea.py --vcf_file ./examples/deepsea/chr22.3k.vcf \                   
                    --out_dir out \
-                   --tf_dir $PATH_TO_TF_DIR
+                   --tf_dir $PATH_TO_TF_DIR \
                    --hg19_file $PATH_TO_HG19
 ```
 
@@ -56,6 +56,9 @@ The PATH_TO_TF_DIR should be pointed to the [encode_peaks.tar.gz](https://zenodo
 ## Citation:
 
 Shi, Wenqiang, Oriol Fornes, and Wyeth W. Wasserman. "Altered transcription factor binding events predict personalized gene expression and confer insight into functional cis-regulatory variants." bioRxiv (2017): 228155.
+
+
+
 
 
 
