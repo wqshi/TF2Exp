@@ -2,3 +2,5 @@
 *.sh
 *tmp*
 *resources*
+*deepsea.cpu*
+*ourdir2018*

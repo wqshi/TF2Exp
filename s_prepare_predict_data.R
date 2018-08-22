@@ -240,11 +240,6 @@ browser(expr=is.null(.ESSBP.[["@3@"]]))##:ess-bp-end:##
     closeAllConnections()
 
     for (loc_gene in gene_list){
-
-
-                                        #flog.debug('Process %s', loc_gene)
-        
-        
         
         output_file = f_p('%s/%s.enet',  results_dir, loc_gene)
 
@@ -262,10 +257,9 @@ browser(expr=is.null(.ESSBP.[["@3@"]]))##:ess-bp-end:##
         }else{
 
             gene_counter = gene_counter + 1
-
-            flog.debug('Process %s', loc_gene)
-            
+            flog.debug('Process %s', loc_gene)            
         }
+        
         feature_df = read.table(f_p('%s.features.gz', output_file), header = T)
 
         
@@ -297,12 +291,12 @@ browser(expr=is.null(.ESSBP.[["@3@"]]))##:ess-bp-end:##
 
         non_zero_cols
         
-                                        #f_assert(all(!is.na(predict_data[,non_zero_cols])), 'Key features are not zero')
+        ##f_assert(all(!is.na(predict_data[,non_zero_cols])), 'Key features are not zero')
         target_col = ''
-        pred_result = f_predict_exp(fit, predict_data, target_col, debug = F)
-
+        pred_result = f_predict_exp(fit, predict_data, target_col, debug = F)        
+        ##:ess-bp-start::browser@nil:##
+browser(expr=is.null(.ESSBP.[["@2@"]]))##:ess-bp-end:##
         
-
         pred_df[loc_gene] = pred_result$pred_value[sample_cols,1]
 
         
