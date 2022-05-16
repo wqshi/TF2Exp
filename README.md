@@ -43,7 +43,7 @@ TF2Exp models only require genotype data in vcf format as input. The vcf file sh
 Based on the input variants, TF2Exp will calculate the alteration of key TF-binding events in the TF2Exp model and further predict the alteration of gene expression in each individual. The predicted expression change of each individual is stored in a file named `predicted_exp.chr*.txt` in the output directory specified by `--output_dir`. The `predicted_exp.chr*.txt` presents a data matrix, in which a element is the predicted expression for a gene (indicated by column name) in a individual of input vcf file(indicated by row name). If the variants doesn't impact the expression of a gene across all the individuals, the predicted expression levels would be same for all individuals. This value is the mean expression value of that gene in the training data. GENCODE v19 transcriptome annotations are used for gene identifiers. In addition, altered features of these genes are stored in the `features` subfolder of the specified output directory.
 
 
-* --deepsea_dir: path to deepsea prediction director
+* --deepsea_dir: path to deepsea prediction directory
 
 * --model_dir: path to TF2Exp trained models
 
